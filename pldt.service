@@ -5,8 +5,9 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/path/to/your/app
-ExecStart=/usr/bin/python3 main.py --interface ens18 --namespace PLDT
+WorkingDirectory=/root/SpeedFlux/
+EnvironmentFile=/root/SpeedFlux/service.env
+ExecStart=/root/SpeedFlux/.venv/bin/python3 main.py --interface ens18 --namespace PLDT
 Restart=always
 StandardOutput=file:/var/log/speedtests/pldt_output.log
 StandardError=file:/var/log/speedtests/pldt_output.log
