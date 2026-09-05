@@ -10,11 +10,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('interface', nargs='?', default=None)
     parser.add_argument('service_id', nargs='?', default=None)
+    parser.add_argument('namespace', nargs='?', default=None)
     args = parser.parse_args()
 
     speedflux.initialize()
     speedflux.LOG.info('Speedtest CLI data logger to InfluxDB started...')
-    pPing = Process(target=data.pingtest, args=())
+    pPing = Process(target=data.pingtest, args=(args.namespace,))
     pSpeed = Process(target=data.speedtest,
                      args=(args.interface, args.service_id))
     speedtest_interval = speedflux.CONFIG.SPEEDTEST_INTERVAL * 60
@@ -25,7 +26,7 @@ def main():
             if loopcount == 0 or loopcount % ping_interval == 0:
                 if pPing.is_alive():
                     pPing.terminate()
-                pPing = Process(target=data.pingtest, args=())
+                pPing = Process(target=data.pingtest, args=(args.namespace,))
                 pPing.start()
 
         if loopcount == 0 or loopcount % speedtest_interval == 0:

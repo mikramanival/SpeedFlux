@@ -43,7 +43,8 @@ def speedtest(interface=None, service_id=None):
         speedflux.LOG.debug(speedtest.stdout)
 
 
-def pingtest():
+def pingtest(namespace=None):
+    namespace = namespace or speedflux.CONFIG.NAMESPACE
     timestamp = datetime.datetime.utcnow()
     for target in speedflux.CONFIG.PING_TARGETS.split(','):
         target = target.strip()
@@ -65,6 +66,6 @@ def pingtest():
                 }
             }
         ]
-        if speedflux.CONFIG.NAMESPACE:
-            data[0]['tags']['namespace'] = speedflux.CONFIG.NAMESPACE
+        if namespace:
+            data[0]['tags']['namespace'] = namespace
         speedflux.INFLUXDB.write(data, data_type='Ping')
