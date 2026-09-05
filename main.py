@@ -8,9 +8,9 @@ from speedflux import data
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_parser_argument('--interface', required=True, default=None)
-    parser.add_parser_argument('--service_id', required=False, default=None)
-    parser.add_parser_argument('--namespace', required=True, default=None)
+    parser.add_argument('--interface', default=None)
+    parser.add_argument('--service-id', dest='service_id', default=None)
+    parser.add_argument('--namespace', default=None)
     args = parser.parse_args()
 
     speedflux.initialize()
