@@ -54,7 +54,7 @@ class Influx:
             speedflux.LOG.error(f"Retry {self.retries}: Initiliazing DB.")
             self.init_db()
 
-    def format_data(self, data):
+    def format_data(self, data, namespace=None):
         influx_data = [
             {
                 'measurement': 'ping',
@@ -119,6 +119,8 @@ class Influx:
         if tags is not None:
             for measurement in influx_data:
                 measurement['tags'] = tags
+                if namespace:
+                    measurement['tags']['namespace'] = namespace
 
         return influx_data
 
@@ -189,6 +191,6 @@ class Influx:
             options[tag] = tag_switch[tag]
         return options
 
-    def process_data(self, data):
-        data = self.format_data(data)
+    def process_data(self, data, namespace=None):
+        data = self.format_data(data, namespace)
         self.write(data)

@@ -36,7 +36,7 @@ def speedtest(interface=None, service_id=None):
             server location: ({data_json['server']['name']} @ \
                 {data_json['server']['location']})
             """)
-        speedflux.INFLUXDB.process_data(data_json)
+        speedflux.INFLUXDB.process_data(data_json, namespace)
     else:  # Speedtest failed.
         speedflux.LOG.info("Speedtest Failed :")
         speedflux.LOG.debug(speedtest.stderr)
