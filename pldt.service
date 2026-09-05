@@ -1,0 +1,15 @@
+[Unit]
+Description=Python Interface Monitor for PLDT
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/path/to/your/app
+ExecStart=/usr/bin/python3 main.py --interface ens18 --namespace PLDT
+Restart=always
+StandardOutput=file:/var/log/speedtests/pldt_output.log
+StandardError=file:/var/log/speedtests/pldt_output.log
+
+[Install]
+WantedBy=multi-user.target
