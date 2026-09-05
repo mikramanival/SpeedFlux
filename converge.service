@@ -5,8 +5,9 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/path/to/your/app
-ExecStart=/usr/bin/python3 main.py --interface ens19 --namespace CONVERGE
+WorkingDirectory=/root/SpeedFlux/
+Environment=VIRTUAL_ENV=/root/SpeedFlux/.venv
+ExecStart=/root/SpeedFlux/.venv/bin/python3 main.py --interface ens19 --namespace CONVERGE
 Restart=always
 StandardOutput=file:/var/log/speedtests/converge_output.log
 StandardError=file:/var/log/speedtests/converge_output.log
