@@ -9,7 +9,6 @@ import speedflux
 def speedtest(interface=None, service_id=None, namespace=None):
     command = ["speedtest", "--accept-license", "--accept-gdpr", "-f", "json"]
     interface = interface or speedflux.CONFIG.INTERFACE
-    service_id = service_id or speedflux.CONFIG.SPEEDTEST_SERVER_ID
     namespace = namespace or speedflux.CONFIG.NAMESPACE
 
     if interface:
