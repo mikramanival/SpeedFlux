@@ -6,19 +6,21 @@ import datetime
 import speedflux
 
 
-def speedtest():
-    if not speedflux.CONFIG.SPEEDTEST_SERVER_ID:
-        speedtest = subprocess.run(
-            ["speedtest", "--accept-license", "--accept-gdpr", "-f", "json"],
-            capture_output=True)
-        speedflux.LOG.info("Automatic server choice")
-    else:
-        speedtest = subprocess.run(
-            ["speedtest", "--accept-license", "--accept-gdpr", "-f", "json",
-                f"--server-id={speedflux.CONFIG.SPEEDTEST_SERVER_ID}"],
-            capture_output=True)
+def speedtest(interface=None, service_id=None):
+    command = ["speedtest", "--accept-license", "--accept-gdpr", "-f", "json"]
+    interface = interface or speedflux.CONFIG.INTERFACE
+    service_id = service_id or speedflux.CONFIG.SPEEDTEST_SERVER_ID
+
+    if interface:
+        command.extend(["--interface", interface])
+    if service_id:
+        command.append(f"--server-id={service_id}")
         speedflux.LOG.info("Manual server choice : "
-                           f"ID = {speedflux.CONFIG.SPEEDTEST_SERVER_ID}")
+                           f"ID = {service_id}")
+    else:
+        speedflux.LOG.info("Automatic server choice")
+
+    speedtest = subprocess.run(command, capture_output=True)
 
     if speedtest.returncode == 0:  # Speedtest was successful.
         speedflux.LOG.info("Speedtest Successful...Writing to Influx")
