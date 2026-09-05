@@ -17,7 +17,7 @@ def main():
     speedflux.LOG.info('Speedtest CLI data logger to InfluxDB started...')
     pPing = Process(target=data.pingtest, args=(args.namespace,))
     pSpeed = Process(target=data.speedtest,
-                     args=(args.interface, args.service_id))
+                     args=(args.interface, args.service_id, args.namespace))
     speedtest_interval = speedflux.CONFIG.SPEEDTEST_INTERVAL * 60
     ping_interval = speedflux.CONFIG.PING_INTERVAL
     loopcount = 0
@@ -33,7 +33,7 @@ def main():
             if pSpeed.is_alive():
                 pSpeed.terminate()
             pSpeed = Process(target=data.speedtest,
-                             args=(args.interface, args.service_id))
+                             args=(args.interface, args.service_id, args.namespace))
             pSpeed.start()
         if ping_interval != 0:
             if loopcount % (ping_interval * speedtest_interval) == 0:
